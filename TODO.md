@@ -6,16 +6,15 @@ Project Description
 
 ### Todo
 
-- [ ] Setup github  
-- [ ] layout  
-- [ ] custom component  
-- [ ] index page  
 
 ### In Progress
 
 
 ### Done ✓
 
+- [x] index page  
+- [x] custom component  
+- [x] Setup github  
 - [x] cleanup boilerplate  
 - [x] setup database  
 
