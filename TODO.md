@@ -6,12 +6,12 @@ Project Description
 
 ### Todo
 
-- [ ] Card style & format uang  
 - [ ] Update Barang  
 - [ ] Delete Barang  
 - [ ] Pagination  
 - [ ] Search  
 - [ ] Code cleaning  
+- [ ] host to vercel  
 - [ ] SEO  
 - [ ] Animation  
 - [ ] Unique Name  
@@ -23,6 +23,7 @@ Project Description
 
 ### Done ✓
 
+- [x] Card style & format uang  
 - [x] FIFO order  
 - [x] use swr  
 - [x] submit barang  

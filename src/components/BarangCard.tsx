@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import type { Barang } from "~/utils/types";
+import { formatMoney } from "~/utils/formatMoney";
 
 interface Props {
   barang: Barang;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const BarangCard: React.FC<Props> = ({ barang, onEdit, onDelete }) => {
+  console.log(formatMoney(barang.harga_beli));
   return (
     <div className="rounded-lg bg-white shadow-md">
       <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
@@ -24,11 +26,11 @@ const BarangCard: React.FC<Props> = ({ barang, onEdit, onDelete }) => {
           className="object-center"
         />
       </div>
-      <div className="p-4">
+      <div className="p-4 pt-2">
         <div className="text-xl font-bold">{barang.nama}</div>
-        <p>Harga Beli: {barang.harga_beli}</p>
-        <p>Harga Jual: {barang.harga_jual}</p>
-        <p>Stok: {barang.stok}</p>
+        <p>Beli :{formatMoney(barang.harga_beli)}</p>
+        <p>Jual :{formatMoney(barang.harga_jual)}</p>
+        <p>Stok :{barang.stok}</p>
         <div className="mt-4 flex justify-end space-x-2">
           <button
             onClick={onDelete}
