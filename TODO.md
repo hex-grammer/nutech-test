@@ -11,6 +11,7 @@ Project Description
 - [ ] Delete Barang  
 - [ ] Pagination  
 - [ ] Search  
+- [ ] Code cleaning  
 - [ ] SEO  
 - [ ] Animation  
 - [ ] Unique Name  
