@@ -1,51 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import useSWR, { mutate } from "swr";
 import BarangList from "~/components/BarangList";
 import InputBarang from "~/components/InputBarang";
 import type { Barang } from "~/utils/types";
 
-const initialBarang: Barang = {
-  id: 1,
-  foto: "",
-  nama: "",
-  harga_beli: 0,
-  harga_jual: 0,
-  stok: 0,
-};
+const fetcher = (url: string) =>
+  axios.get(url).then((res) => res.data as Barang[]);
 
 export default function Home() {
-  const [barangList, setBarangList] = useState<Barang[]>([]);
   const [isTambahData, setIsTambahData] = useState(false);
+  const { data: barangList } = useSWR<Barang[]>("/api/barang/get-all", fetcher);
 
-  const handleSubmit = (submittedBarang: Barang) => {
-    console.log(submittedBarang);
-    // Here you can perform the API call to save the submitted data to the backend
-    // For example, you can use Axios to post the data to the server
-    // axios.post("/api/barang", submittedBarang)
-    //   .then((response) => {
-    //     console.log("Data submitted successfully:", response.data);
-    //     // Reset the form or any other necessary actions
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error submitting data:", error);
-    //   });
-  };
-
-  const handleCancle = () => {
+  const handleCancle = async () => {
+    await mutate("/api/barang/get-all");
     setIsTambahData(false);
   };
-
-  useEffect(() => {
-    // Fetch data from the API endpoint using Axios
-    axios
-      .get<Barang[]>("/api/barang/get-all")
-      .then((response) => {
-        setBarangList(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
 
   const handleTambahDataClick = () => {
     setIsTambahData(true);
@@ -55,11 +26,7 @@ export default function Home() {
     <>
       {isTambahData && (
         <div className="absolute z-10 flex h-full w-full items-center justify-center bg-black bg-opacity-40">
-          <InputBarang
-            barang={initialBarang}
-            onSubmit={handleSubmit}
-            onCancel={handleCancle}
-          />
+          <InputBarang onCancel={() => void handleCancle()} />
         </div>
       )}
       <main className="flex min-h-screen flex-col bg-gray-100 p-4 sm:px-[15%]">
@@ -73,8 +40,13 @@ export default function Home() {
         >
           Tambah Data
         </button>
-        <BarangList barangList={barangList} />
+        {!barangList ? (
+          <p>Loading...</p>
+        ) : (
+          <BarangList barangList={barangList} />
+        )}
       </main>
+      <ToastContainer position="top-right" />
     </>
   );
 }

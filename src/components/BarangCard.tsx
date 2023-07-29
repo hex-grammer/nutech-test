@@ -13,7 +13,11 @@ const BarangCard: React.FC<Props> = ({ barang, onEdit, onDelete }) => {
     <div className="rounded-lg bg-white shadow-md">
       <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
         <Image
-          src={typeof barang.foto === "string" ? barang.foto : ""}
+          src={
+            typeof barang.foto === "string"
+              ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${barang.foto}`
+              : ""
+          }
           alt={barang.nama}
           layout="fill"
           objectFit="cover"

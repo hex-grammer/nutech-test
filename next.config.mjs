@@ -8,7 +8,7 @@ await import("./src/env.mjs");
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ['picsum.photos']
+    domains: ['project-api.xolusi.com']
   },
 
   /**

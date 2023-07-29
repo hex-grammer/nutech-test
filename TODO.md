@@ -6,21 +6,27 @@ Project Description
 
 ### Todo
 
-- [ ] create barang api  
-- [ ] upload gambar api (PHP)  
-- [ ] submit barang  
+- [ ] Card style & format uang  
 - [ ] Update Barang  
 - [ ] Delete Barang  
 - [ ] Pagination  
 - [ ] Search  
 - [ ] SEO  
 - [ ] Animation  
+- [ ] Unique Name  
+- [ ] Upgrade Style  
+- [ ] Update README.MD  
 
 ### In Progress
 
 
 ### Done ✓
 
+- [x] FIFO order  
+- [x] use swr  
+- [x] submit barang  
+- [x] create barang endpoint  
+- [x] upload gambar api (PHP)  
 - [x] Popup form (hide, show)  
 - [x] Form tambah barang (component)  
 - [x] add toastify  

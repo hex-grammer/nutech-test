@@ -9,7 +9,11 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      const barang = await prisma.barang.findMany();
+      const barang = await prisma.barang.findMany({
+        orderBy: {
+          id: "desc",
+        },
+      });
       res.status(200).json(barang);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });

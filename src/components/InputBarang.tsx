@@ -2,21 +2,31 @@ import React, { useState } from "react";
 import type { Barang } from "~/utils/types";
 import { toast, ToastContainer } from "react-toastify";
 import MediaUploader from "./MediaUploader";
+import axios, { type AxiosResponse } from "axios";
 
 interface Props {
-  barang: Barang;
-  onSubmit: (submittedBarang: Barang) => void;
+  // barang: Barang;
+  // onSubmit: (submittedBarang: Barang) => boolean;
   onCancel: () => void;
 }
 
-const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState<Barang>(barang);
+const initialBarang: Barang = {
+  id: 1,
+  foto: "",
+  nama: "",
+  harga_beli: 0,
+  harga_jual: 0,
+  stok: 0,
+};
+
+const InputBarang: React.FC<Props> = ({ onCancel }) => {
+  const [barang, setBarang] = useState<Barang>(initialBarang);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setBarang({
+      ...barang,
       [name]: value,
     });
   };
@@ -28,8 +38,8 @@ const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
     if (allowedTypes.includes(file.type)) {
       // Validate file size (max 100KB)
       if (file.size <= 100 * 1024) {
-        setFormData({
-          ...formData,
+        setBarang({
+          ...barang,
           foto: file,
         });
 
@@ -48,12 +58,51 @@ const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
   };
 
   const handleCancel = () => {
-    setFormData(barang);
+    setBarang(barang);
     onCancel();
   };
 
   const handleSubmit = () => {
-    onSubmit(formData);
+    // If the barang state is empty, alert complete form and return
+    if (
+      barang.foto === initialBarang.foto ||
+      barang.nama === initialBarang.nama
+    ) {
+      toast.error("Mohon lengkapi data barang!");
+      return;
+    }
+
+    // Create a new FormData from barang.file object to send the file to the API endpoint
+    const formFoto = new FormData();
+    formFoto.append("image", barang.foto as Blob);
+
+    // Send the image to the API endpoint
+    axios
+      .post(process.env.NEXT_PUBLIC_STORAGE ?? "", formFoto)
+      .then((response: AxiosResponse<{ imageUrl: string }>) => {
+        // Get the imageUrl from the response
+        const imageUrl = response.data.imageUrl;
+
+        console.log(response.data);
+
+        // custom dataBarang to send (remove id and reaplace foto with imageUrl)
+        const { id, ...dataBarang } = { ...barang, foto: imageUrl };
+
+        // Send the POST request to the /api/materi/create endpoint with the updated data
+        axios
+          .post("/api/barang/create", dataBarang)
+          .then(() => {
+            toast.success("Data berhasil disimpan!");
+            setBarang(barang);
+            onCancel();
+          })
+          .catch(() => {
+            toast.error("Data tidak tersimpan!");
+          });
+      })
+      .catch(() => {
+        toast.error("Gambar tidak tersimpan!");
+      });
   };
 
   return (
@@ -67,7 +116,7 @@ const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
         <input
           type="text"
           name="nama"
-          value={formData.nama}
+          value={barang.nama}
           onChange={handleChange}
           className="w-full rounded-sm border bg-gray-100 px-2 py-1 outline-blue-500"
         />
@@ -75,7 +124,7 @@ const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
         <input
           type="number"
           name="harga_beli"
-          value={formData.harga_beli}
+          value={barang.harga_beli}
           onChange={handleChange}
           className="w-full rounded-sm border bg-gray-100 px-2 py-1 outline-blue-500"
         />
@@ -83,7 +132,7 @@ const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
         <input
           type="number"
           name="harga_jual"
-          value={formData.harga_jual}
+          value={barang.harga_jual}
           onChange={handleChange}
           className="w-full rounded-sm border bg-gray-100 px-2 py-1 outline-blue-500"
         />
@@ -91,7 +140,7 @@ const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
         <input
           type="number"
           name="stok"
-          value={formData.stok}
+          value={barang.stok}
           onChange={handleChange}
           className="w-full rounded-sm border bg-gray-100 px-2 py-1 outline-blue-500"
         />
@@ -110,7 +159,6 @@ const InputBarang: React.FC<Props> = ({ barang, onSubmit, onCancel }) => {
           Submit
         </button>
       </div>
-      <ToastContainer position="top-right" />
     </div>
   );
 };
