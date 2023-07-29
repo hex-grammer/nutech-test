@@ -6,13 +6,13 @@ Project Description
 
 ### Todo
 
-- [ ] Update Barang  
-- [ ] Delete Barang  
-- [ ] Pagination  
+- [ ] mutation on tambah data  
 - [ ] Search  
 - [ ] Code cleaning  
+- [ ] Real Data  
 - [ ] host to vercel  
 - [ ] SEO  
+- [ ] Skeleton loading  
 - [ ] Animation  
 - [ ] Unique Name  
 - [ ] Upgrade Style  
@@ -23,6 +23,9 @@ Project Description
 
 ### Done ✓
 
+- [x] Pagination  
+- [x] Delete Barang  
+- [x] Update Barang  
 - [x] Card style & format uang  
 - [x] FIFO order  
 - [x] use swr  

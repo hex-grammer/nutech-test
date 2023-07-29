@@ -5,7 +5,7 @@ import MediaUploader from "./MediaUploader";
 import axios, { type AxiosResponse } from "axios";
 
 interface Props {
-  // barang: Barang;
+  editBarang?: Barang;
   // onSubmit: (submittedBarang: Barang) => boolean;
   onCancel: () => void;
 }
@@ -19,9 +19,11 @@ const initialBarang: Barang = {
   stok: 0,
 };
 
-const InputBarang: React.FC<Props> = ({ onCancel }) => {
-  const [barang, setBarang] = useState<Barang>(initialBarang);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
+  const initialImage =
+    `${process.env.NEXT_PUBLIC_IMAGE_URL}${editBarang?.foto as string}` ?? null;
+  const [barang, setBarang] = useState<Barang>(editBarang ?? initialBarang);
+  const [imagePreview, setImagePreview] = useState<string | null>(initialImage);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,45 +65,78 @@ const InputBarang: React.FC<Props> = ({ onCancel }) => {
   };
 
   const handleSubmit = () => {
+    // set loading true
+    // setLoading(true);
+
     // If the barang state is empty, alert complete form and return
-    if (
-      barang.foto === initialBarang.foto ||
-      barang.nama === initialBarang.nama
-    ) {
+    if (!barang.foto || !barang.nama) {
+      // toast error
       toast.error("Mohon lengkapi data barang!");
+
+      // set loading false
+      // setLoading(false);
       return;
     }
 
-    // Create a new FormData from barang.file object to send the file to the API endpoint
-    const formFoto = new FormData();
-    formFoto.append("image", barang.foto as Blob);
+    // Define the data to be sent to the API
+    const dataBarang: Barang = { ...barang };
 
-    // Send the image to the API endpoint
+    // Check if the data has changed
+    const hasDataChanged =
+      JSON.stringify(dataBarang) !== JSON.stringify(editBarang);
+
+    if (!hasDataChanged) {
+      // Data has not changed, no need to make the API call
+      // setLoading(false);
+      onCancel();
+      return;
+    }
+
+    // Check if barang.foto is a File object (not a string)
+    if (typeof barang.foto !== "string") {
+      const formFoto = new FormData();
+      formFoto.append("image", barang.foto as Blob);
+
+      // Send the image to the API endpoint
+      axios
+        .post(process.env.NEXT_PUBLIC_STORAGE ?? "", formFoto)
+        .then((response: AxiosResponse<{ imageUrl: string }>) => {
+          // Get the imageUrl from the response
+          const imageUrl = response.data.imageUrl;
+
+          // Set the imageUrl in the data to be sent
+          dataBarang.foto = imageUrl;
+
+          // Send the dataBarang to the /api/barang/create endpoint
+          submitDataBarang(dataBarang);
+        })
+        .catch(() => {
+          toast.error("Gambar tidak tersimpan!");
+          // setLoading(false);
+        });
+    } else {
+      // If barang.foto is already an imageUrl, directly send the dataBarang to the /api/barang/create endpoint
+      submitDataBarang(dataBarang);
+    }
+  };
+
+  const submitDataBarang = (dataBarang: Barang) => {
     axios
-      .post(process.env.NEXT_PUBLIC_STORAGE ?? "", formFoto)
-      .then((response: AxiosResponse<{ imageUrl: string }>) => {
-        // Get the imageUrl from the response
-        const imageUrl = response.data.imageUrl;
-
-        console.log(response.data);
-
-        // custom dataBarang to send (remove id and reaplace foto with imageUrl)
-        const { id, ...dataBarang } = { ...barang, foto: imageUrl };
-
-        // Send the POST request to the /api/materi/create endpoint with the updated data
-        axios
-          .post("/api/barang/create", dataBarang)
-          .then(() => {
-            toast.success("Data berhasil disimpan!");
-            setBarang(barang);
-            onCancel();
-          })
-          .catch(() => {
-            toast.error("Data tidak tersimpan!");
-          });
+      .post("/api/barang/create", dataBarang)
+      .then(() => {
+        editBarang
+          ? toast.success("Data berhasil diedit!")
+          : toast.success("Data berhasil disimpan!");
+        setBarang(dataBarang);
+        onCancel();
       })
       .catch(() => {
-        toast.error("Gambar tidak tersimpan!");
+        editBarang
+          ? toast.success("Data tidak berhasil diedit!")
+          : toast.error("Data tidak tersimpan!");
+      })
+      .finally(() => {
+        // setLoading(false);
       });
   };
 
