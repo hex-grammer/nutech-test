@@ -6,22 +6,22 @@ Project Description
 
 ### Todo
 
-- [ ] Loading  
-- [ ] Code cleaning  
-- [ ] Real Data  
-- [ ] host to vercel  
-- [ ] SEO  
 - [ ] Skeleton loading  
 - [ ] Animation  
-- [ ] Unique Name  
-- [ ] Upgrade Style  
-- [ ] Update README.MD  
 
 ### In Progress
 
+- [ ] host to vercel  
 
 ### Done ✓
 
+- [x] Upgrade Style  
+- [x] Update README.MD  
+- [x] SEO  
+- [x] Loading  
+- [x] Real Data  
+- [x] Code cleaning  
+- [x] Unique Name  
 - [x] Search  
 - [x] mutation on tambah data  
 - [x] Pagination Reusable Component  

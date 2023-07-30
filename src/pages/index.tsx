@@ -7,7 +7,7 @@ import InputBarang from "~/components/InputBarang";
 import type { Barang } from "~/utils/types";
 import Pagination from "~/components/Pagination";
 import SearchInput from "~/components/SearchInput";
-import { FiSearch } from "react-icons/fi";
+import { NextSeo } from "next-seo";
 
 const fetcher = (url: string) =>
   axios
@@ -17,29 +17,27 @@ const fetcher = (url: string) =>
 export default function Home() {
   const [isTambahData, setIsTambahData] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(9);
   const [searchText, setSearchText] = useState("");
   const [barangList, setBarangList] = useState<Barang[]>([]);
+  const [editId, setEditId] = useState(0);
+  const PAGE_SIZE = 9;
+  const PAGINATION_QUERY = `/api/barang/pagination?page=${currentPage}&pageSize=${PAGE_SIZE}`;
 
-  // Fetch the data with the updated currentPage and pageSize
+  // Fetch data barang dari API
   const { data } = useSWR<{ barangList: Barang[]; total: number }>(
-    `/api/barang/pagination?page=${currentPage}&pageSize=${pageSize}`,
+    PAGINATION_QUERY,
     fetcher
   );
 
-  // Update the barangList state whenever the data changes
+  // update barangList state jika data berubah
   useEffect(() => {
     if (data?.barangList) {
       setBarangList(data.barangList);
     }
   }, [data]);
 
-  const [editId, setEditId] = useState(0);
-
   const handleCancle = async () => {
-    await mutate(
-      `/api/barang/pagination?page=${currentPage}&pageSize=${pageSize}`
-    );
+    await mutate(PAGINATION_QUERY);
     setIsTambahData(false);
     setEditId(0);
   };
@@ -54,20 +52,18 @@ export default function Home() {
 
   const handleSearch = async () => {
     try {
-      // Make a POST request to the search endpoint
+      // Kirim request ke API untuk mencari barang
       const response: AxiosResponse<Barang[]> = await axios.get(
         `/api/barang/search${searchText ? `?s=${searchText}` : ""}`
       );
 
-      // Handle the response data
-      const searchResults = response.data;
-
-      if (searchResults.length === 0) {
+      // Jika data tidak ditemukan, tampilkan pesan error
+      if (response.data.length === 0) {
         return toast.error("Data tidak ditemukan!");
       }
 
-      // update the barangList state
-      setBarangList(searchResults);
+      // update barangList state
+      setBarangList(response.data);
     } catch (error) {
       toast.error("Data tidak ditemukan!");
     }
@@ -82,6 +78,19 @@ export default function Home() {
 
   return (
     <>
+      {/* NEXT-SEO */}
+      <NextSeo
+        title="Manajemen Data Barang"
+        description="Aplikasi pengelolaan data barang menggunakan Next.js, Tailwind CSS, dan MySQL."
+        openGraph={{
+          images: [
+            {
+              url: "/images/og-image.png",
+              alt: "Aplikasi Manajemen Data Barang",
+            },
+          ],
+        }}
+      />
       {/* FORM MODAL */}
       {(editId || isTambahData) && (
         <div className="fixed z-10 flex h-full w-full items-center justify-center bg-black bg-opacity-40">
@@ -114,7 +123,7 @@ export default function Home() {
             <Pagination
               currentPage={currentPage}
               totalItems={data?.total ?? 0}
-              pageSize={pageSize}
+              pageSize={PAGE_SIZE}
               onChangePage={handleChangePage}
             />
             <SearchInput
@@ -128,11 +137,7 @@ export default function Home() {
           <p>Loading...</p>
         ) : (
           <BarangList
-            mutate={() =>
-              void mutate(
-                `/api/barang/pagination?page=${currentPage}&pageSize=${pageSize}`
-              )
-            }
+            mutate={() => void mutate(PAGINATION_QUERY)}
             setEditId={setEditId}
             barangList={barangList}
           />

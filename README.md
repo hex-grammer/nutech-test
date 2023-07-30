@@ -1,28 +1,67 @@
-# Create T3 App
+# Aplikasi Manajemen Data - README
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+![Aplikasi Manajemen Data](https://nutech.rizaltsx.com/images/og-image.png)
 
-## What's next? How do I make an app with this?
+Selamat datang di Aplikasi Manajemen Data! Ini adalah aplikasi sederhana yang dibangun untuk membantu Anda dalam mengelola data produk dan item dengan efisien. Aplikasi ini memungkinkan Anda untuk memantau stok, harga, dan informasi produk dengan mudah.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Demo
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Anda dapat mengakses demo Aplikasi Manajemen Data melalui tautan berikut: [Demo Aplikasi](https://nutech.rizaltsx.com)
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Fitur Utama
 
-## Learn More
+- Tambah, edit, dan hapus data produk.
+- Tampilan daftar produk dengan paginasi.
+- Pencarian produk berdasarkan nama.
+- Tampilan rinci produk dengan informasi lengkap.
+- Desain responsif untuk pengalaman pengguna yang optimal di berbagai perangkat.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Cara Penggunaan
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+1. Buka aplikasi melalui tautan [Demo Aplikasi](https://nutech.rizaltsx.com).
+2. Tampilan utama akan menampilkan daftar produk yang telah ada.
+3. Untuk menambah produk baru, klik tombol "Tambah Data" dan isi formulir yang muncul.
+4. Untuk mengedit produk, klik tombol edit pada item produk yang diinginkan dan lakukan perubahan pada formulir.
+5. Untuk mencari produk berdasarkan nama, masukkan teks pencarian di kotak pencarian dan tekan Enter.
+6. Untuk menghapus produk, klik tombol hapus pada item produk yang diinginkan.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Instalasi Lokal
 
-## How do I deploy this?
+Jika Anda ingin menjalankan Aplikasi Manajemen Data secara lokal, Anda dapat mengikuti langkah-langkah di bawah ini:
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+1. Pastikan Anda telah menginstal [Node.js](https://nodejs.org/) di sistem Anda.
+2. Clone repositori ini ke direktori lokal Anda:
+
+```bash
+git clone https://github.com/hex-grammer/nutech-test.git
+```
+
+3. Masuk ke direktori proyek:
+
+```bash
+cd nutech-test
+```
+
+4. Install dependensi proyek dengan menjalankan perintah:
+
+```bash
+npm install
+```
+
+5. Jalankan aplikasi dengan perintah:
+
+```bash
+npm run dev
+```
+
+6. Aplikasi akan berjalan di http://localhost:3000.
+
+## Kontribusi
+
+Kami senang menerima kontribusi dari para pengguna. Jika Anda menemukan masalah atau ingin menambahkan fitur baru, silakan ajukan permintaan tarik di repositori GitHub kami: [Aplikasi Manajemen Data - GitHub](https://github.com/hex-grammer/nutech-test)
+
+## Kontak
+
+Jika Anda memiliki pertanyaan atau pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami melalui email di rizal@xolusi.com.
+
+Selamat menggunakan Aplikasi Manajemen Data! Semoga aplikasi ini bermanfaat bagi kebutuhan bisnis Anda. Terima kasih atas dukungan Anda!

@@ -12,30 +12,18 @@ interface Props {
 
 const BarangList: React.FC<Props> = ({ barangList, setEditId, mutate }) => {
   const handleEdit = (id: number) => {
-    // Implement your edit logic here
     setEditId(id);
   };
 
   const handleDelete = async (id: number) => {
-    // Show a confirmation dialog before proceeding with deletion
-    const shouldDelete = window.confirm(
-      "Are you sure you want to delete this barang?"
-    );
-    if (!shouldDelete) {
-      return; // If the user cancels, exit the function without proceeding with deletion
+    if (!window.confirm("Anda ingin menghapus barang ini?")) {
+      return;
     }
-
     try {
-      // Send the DELETE request to the API endpoint to remove the barang
       await axios.delete(`/api/barang/delete`, { data: { id } });
-
-      // Call the mutate function to update the data in the cache
       mutate();
-
-      // Handle successful deletion
       toast.warn("Barang telah dihapus.");
     } catch (error) {
-      // Handle error if the deletion fails
       toast.error("Barang gagal dihapus.");
     }
   };

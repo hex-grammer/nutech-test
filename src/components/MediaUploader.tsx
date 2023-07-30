@@ -48,9 +48,8 @@ const MediaUploader: React.FC<Props> = ({ onMediaChange, imagePreview }) => {
           <Image
             src={imagePreview}
             alt="Image Preview"
-            layout="fill"
-            objectFit="contain"
             className="rounded-md"
+            fill
           />
         )}
       </div>

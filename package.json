@@ -19,6 +19,7 @@
     "@trpc/server": "^10.26.0",
     "axios": "^1.4.0",
     "next": "^13.4.2",
+    "next-seo": "^6.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-drag-drop-files": "^2.3.10",

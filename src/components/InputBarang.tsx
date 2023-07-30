@@ -3,6 +3,7 @@ import type { Barang } from "~/utils/types";
 import { toast } from "react-toastify";
 import MediaUploader from "./MediaUploader";
 import axios, { type AxiosResponse } from "axios";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface Props {
   editBarang?: Barang;
@@ -24,6 +25,7 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
     `${process.env.NEXT_PUBLIC_IMAGE_URL}${editBarang?.foto as string}` ?? null;
   const [barang, setBarang] = useState<Barang>(editBarang ?? initialBarang);
   const [imagePreview, setImagePreview] = useState<string | null>(initialImage);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,10 +36,10 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
   };
 
   const handleFotoChange = (file: File) => {
-    // Validate file format (only JPG and PNG)
+    // Hanya terima JPG dan PNG
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
     if (allowedTypes.includes(file.type)) {
-      // Validate file size (max 100KB)
+      // Ukuran maximum file: 100KB
       if (file.size <= 100 * 1024) {
         setBarang({
           ...barang,
@@ -64,58 +66,45 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
   };
 
   const handleSubmit = () => {
-    // set loading true
-    // setLoading(true);
+    setLoading(true);
 
-    // If the barang state is empty, alert complete form and return
+    // Jika foto atau nama kosong
     if (!barang.foto || !barang.nama) {
-      // toast error
+      setLoading(false);
       toast.error("Mohon lengkapi data barang!");
-
-      // set loading false
-      // setLoading(false);
       return;
     }
 
-    // Define the data to be sent to the API
-    const dataBarang: Barang = { ...barang };
-
-    // Check if the data has changed
-    const hasDataChanged =
-      JSON.stringify(dataBarang) !== JSON.stringify(editBarang);
-
-    if (!hasDataChanged) {
-      // Data has not changed, no need to make the API call
-      // setLoading(false);
+    // Jika data tidak berubah
+    if (JSON.stringify(barang) === JSON.stringify(editBarang)) {
+      setLoading(false);
       onCancel();
       return;
     }
 
-    // Check if barang.foto is a File object (not a string)
+    // jika foto bukan string, berarti foto adalah file
     if (typeof barang.foto !== "string") {
       const formFoto = new FormData();
       formFoto.append("image", barang.foto as Blob);
 
-      // Send the image to the API endpoint
+      // Kirim foto ke NEXT_PUBLIC_STORAGE
       axios
         .post(process.env.NEXT_PUBLIC_STORAGE ?? "", formFoto)
         .then((response: AxiosResponse<{ imageUrl: string }>) => {
-          // Get the imageUrl from the response
+          // Set barang.foto ke imageUrl
           const imageUrl = response.data.imageUrl;
-
-          // Set the imageUrl in the data to be sent
-          dataBarang.foto = imageUrl;
-
-          // Send the dataBarang to the /api/barang/create endpoint
-          submitDataBarang(dataBarang);
+          barang.foto = imageUrl;
+          submitDataBarang(barang);
+          setLoading(false);
         })
         .catch(() => {
+          setLoading(false);
           toast.error("Gambar tidak tersimpan!");
-          // setLoading(false);
         });
     } else {
-      // If barang.foto is already an imageUrl, directly send the dataBarang to the /api/barang/create endpoint
-      submitDataBarang(dataBarang);
+      // Jika foto adalah string, berarti foto langsung dikirim ke API
+      submitDataBarang(barang);
+      setLoading(false);
     }
   };
 
@@ -141,6 +130,7 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
         onMediaChange={handleFotoChange}
         imagePreview={imagePreview}
       />
+      {/* inputs */}
       <div className="grid max-w-sm grid-cols-1 gap-1">
         <label className="mt-2">Nama Barang</label>
         <input
@@ -175,6 +165,7 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
           className="w-full rounded-sm border bg-gray-100 px-2 py-1 outline-blue-500"
         />
       </div>
+      {/* Tombol Cancel dan Submit */}
       <div className="mt-4 flex justify-between gap-4 sm:justify-end">
         <button
           onClick={handleCancel}
@@ -184,9 +175,16 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
         </button>
         <button
           onClick={handleSubmit}
-          className="w-full rounded-md bg-blue-500 px-4 py-2 text-white sm:w-fit"
+          className={`w-full rounded-md px-4 py-2 text-white ${
+            loading ? "cursor-not-allowed bg-gray-500" : "bg-blue-500"
+          } sm:w-fit`}
+          disabled={loading}
         >
-          Submit
+          {loading ? (
+            <AiOutlineLoading3Quarters className="animate-spin" />
+          ) : (
+            "Submit"
+          )}
         </button>
       </div>
     </div>
