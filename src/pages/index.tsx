@@ -8,6 +8,7 @@ import type { Barang } from "~/utils/types";
 import Pagination from "~/components/Pagination";
 import SearchInput from "~/components/SearchInput";
 import { NextSeo } from "next-seo";
+import CardSkeleton from "~/components/CardSkeleton";
 
 const fetcher = (url: string) =>
   axios
@@ -133,8 +134,12 @@ export default function Home() {
             />
           </div>
         </div>
-        {barangList.length < 0 ? (
-          <p>Loading...</p>
+        {barangList.length === 0 ? (
+          <div className="grid grid-cols-1 gap-4 py-4 md:grid-cols-2 lg:grid-cols-3">
+            {[...Array<number>(3)].map((_, i) => (
+              <CardSkeleton key={i} />
+            ))}
+          </div>
         ) : (
           <BarangList
             mutate={() => void mutate(PAGINATION_QUERY)}

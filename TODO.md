@@ -6,7 +6,6 @@ Project Description
 
 ### Todo
 
-- [ ] Skeleton loading  
 - [ ] Animation  
 
 ### In Progress
@@ -14,6 +13,7 @@ Project Description
 
 ### Done ✓
 
+- [x] Loading Skeleton  
 - [x] host to vercel  
 - [x] Upgrade Style  
 - [x] Update README.MD  
