@@ -85,7 +85,7 @@ export default function Home() {
         openGraph={{
           images: [
             {
-              url: "/images/og-image.png",
+              url: "https://nutech.rizaltsx.com/og-image.png",
               alt: "Aplikasi Manajemen Data Barang",
             },
           ],
