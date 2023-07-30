@@ -6,8 +6,7 @@ Project Description
 
 ### Todo
 
-- [ ] mutation on tambah data  
-- [ ] Search  
+- [ ] Loading  
 - [ ] Code cleaning  
 - [ ] Real Data  
 - [ ] host to vercel  
@@ -23,6 +22,9 @@ Project Description
 
 ### Done ✓
 
+- [x] Search  
+- [x] mutation on tambah data  
+- [x] Pagination Reusable Component  
 - [x] Pagination  
 - [x] Delete Barang  
 - [x] Update Barang  

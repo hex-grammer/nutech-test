@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { Barang } from "~/utils/types";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import MediaUploader from "./MediaUploader";
 import axios, { type AxiosResponse } from "axios";
 
@@ -36,7 +36,6 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
   const handleFotoChange = (file: File) => {
     // Validate file format (only JPG and PNG)
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-    console.log(file.type);
     if (allowedTypes.includes(file.type)) {
       // Validate file size (max 100KB)
       if (file.size <= 100 * 1024) {
@@ -125,18 +124,14 @@ const InputBarang: React.FC<Props> = ({ editBarang, onCancel }) => {
       .post("/api/barang/create", dataBarang)
       .then(() => {
         editBarang
-          ? toast.success("Data berhasil diedit!")
+          ? toast.success("Data berhasil diubah!")
           : toast.success("Data berhasil disimpan!");
-        setBarang(dataBarang);
         onCancel();
       })
       .catch(() => {
         editBarang
-          ? toast.success("Data tidak berhasil diedit!")
-          : toast.error("Data tidak tersimpan!");
-      })
-      .finally(() => {
-        // setLoading(false);
+          ? toast.error("Data gagal diubah!")
+          : toast.error("Data gagal disimpan!");
       });
   };
 

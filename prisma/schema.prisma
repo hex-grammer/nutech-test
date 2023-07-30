@@ -10,7 +10,7 @@ datasource db {
 model barang {
   id         Int    @id @default(autoincrement())
   foto       String
-  nama       String
+  nama       String @unique
   harga_beli Int
   harga_jual Int
   stok       Int

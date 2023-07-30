@@ -10,7 +10,6 @@ interface Props {
 }
 
 const BarangCard: React.FC<Props> = ({ barang, onEdit, onDelete }) => {
-  console.log(formatMoney(barang.harga_beli));
   return (
     <div className="rounded-lg bg-white shadow-md">
       <div className="relative h-40 w-full overflow-hidden rounded-t-lg">
