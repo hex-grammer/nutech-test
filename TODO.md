@@ -11,10 +11,10 @@ Project Description
 
 ### In Progress
 
-- [ ] host to vercel  
 
 ### Done ✓
 
+- [x] host to vercel  
 - [x] Upgrade Style  
 - [x] Update README.MD  
 - [x] SEO  
