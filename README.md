@@ -1,6 +1,6 @@
-# Aplikasi Manajemen Data - README
+# Aplikasi Pengolahan Data Barang - README
 
-![Aplikasi Manajemen Data](https://nutech.rizaltsx.com/images/og-image.png)
+![Aplikasi Manajemen Data](https://nutech.rizaltsx.com/og-image.png)
 
 Selamat datang di Aplikasi Manajemen Data! Ini adalah aplikasi sederhana yang dibangun untuk membantu Anda dalam mengelola data produk dan item dengan efisien. Aplikasi ini memungkinkan Anda untuk memantau stok, harga, dan informasi produk dengan mudah.
 
